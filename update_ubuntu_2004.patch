@@ -1,0 +1,44 @@
+diff --git a/Makefile b/Makefile
+index 3b53aeb..21aa7a7 100644
+--- a/Makefile
++++ b/Makefile
+@@ -24,7 +24,7 @@ CFLAGS = $(COMPILERFLAGS)
+ 
+ 
+ main : main.cpp
+-	g++ -o main main.cpp `pkg-config --cflags --libs opencv` -g -Wall
++	g++ -o main main.cpp `pkg-config --cflags --libs opencv4` -g -Wall
+ 
+ clean :
+ 	rm  $(DIR_OBJ)/*.o ; rm main ;
+diff --git a/main.cpp b/main.cpp
+index 532978e..f94e1ec 100644
+--- a/main.cpp
++++ b/main.cpp
+@@ -134,7 +134,7 @@ void simpleHough(Mat frame, Mat* acc, Mat *f){
+       pt1.y = cvRound(y0 + 1000*(a));
+       pt2.x = cvRound(x0 - 1000*(-b)); //compute second point
+       pt2.y = cvRound(y0 - 1000*(a));
+-      line( *f, pt1, pt2, Scalar(0,0,255), 3, CV_AA);
++      line( *f, pt1, pt2, Scalar(0,0,255), 3, LINE_AA);
+       acc->at<ushort>(Point(max_loc.x ,max_loc.y))=0;
+       max_loc_old.x = max_loc.x;
+       max_loc_old.y = max_loc.y;
+@@ -166,7 +166,7 @@ int main(int argc, char** argv)
+   #endif
+   #if VIDEO==0
+   //Mat frame;
+-  frame = imread(argv[1], CV_LOAD_IMAGE_COLOR);
++  frame = imread(argv[1], IMREAD_COLOR);
+ 
+   if(! frame.data )                              // Check for invalid input
+   {
+@@ -228,7 +228,7 @@ int main(int argc, char** argv)
+         int ms = diff_ms(end,start);
+         //normalize(acc,acc,0,255,NORM_MINMAX, CV_16UC1); //normalize mat, use at your discretion
+         sprintf (name, "fps : %f", 1/((double)ms/1000));
+-        putText(frame, name, cvPoint(30,30), FONT_HERSHEY_COMPLEX_SMALL, 0.8, cvScalar(20,20,25), 1, CV_AA);
++        putText(frame, name, cvPoint(30,30), FONT_HERSHEY_COMPLEX_SMALL, 0.8, cvScalar(20,20,25), 1, LINE_AA);
+ 
+         imshow( "Color Frame", frame );  // Show image with Hough line detection
+         imshow( "Sobel Frame", sobel );  // show filter image
